@@ -3,97 +3,97 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Keetle — Privacy Policy</title>
+<title>Keetle — Know exactly when your kettle boils</title>
+<meta name="description" content="Keetle calculates the exact boil time from your kettle's power, water amount and starting temperature — with a live countdown on the Lock Screen, Dynamic Island and widgets.">
 <style>
   :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
   body {
     font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    max-width: 720px; margin: 0 auto; padding: 32px 20px 64px; color: #1c1b19;
-    background: #faf9f6;
+    margin: 0; color: #1c1b19; background: #faf9f6;
+    -webkit-font-smoothing: antialiased;
   }
+  a { color: #b26922; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+  .hero { text-align: center; padding: 64px 20px 40px; }
+  .tile {
+    width: 112px; height: 112px; margin: 0 auto 24px; display: block;
+    border-radius: 26px; box-shadow: 0 10px 30px rgba(178,105,34,0.28);
+  }
+  h1 { font-size: 40px; line-height: 1.1; margin: 0 0 10px; letter-spacing: -0.5px; }
+  .tagline { font-size: 21px; color: #6b6760; margin: 0 auto; max-width: 30ch; }
+  .badge {
+    display: inline-block; margin-top: 28px; padding: 12px 22px; border-radius: 999px;
+    background: linear-gradient(135deg, #ffd89a, #e8a55c 55%, #b26922);
+    color: #3d2207; font-weight: 700; text-decoration: none; font-size: 16px;
+    box-shadow: 0 6px 18px rgba(178,105,34,0.3);
+  }
+  .badge small { display: block; font-weight: 600; font-size: 12px; opacity: 0.75; }
+
+  .features { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 24px 0 8px; }
+  .card { background: #fff; border: 1px solid #e5e2db; border-radius: 18px; padding: 22px; }
+  .card h3 { margin: 0 0 6px; font-size: 18px; }
+  .card p { margin: 0; color: #6b6760; font-size: 15px; }
+  .emoji { font-size: 26px; line-height: 1; }
+
+  .how { margin: 40px 0; padding: 24px; background: #fff8f0; border-radius: 18px; border: 1px solid #f6d9b7; }
+  .how h2 { margin: 0 0 8px; font-size: 22px; }
+  .how code { background: #fcefe2; padding: 2px 8px; border-radius: 8px; font-size: 15px; color: #8b4f18; }
+
+  footer { text-align: center; color: #8a8580; font-size: 14px; padding: 40px 20px 56px; }
+  footer a { margin: 0 10px; }
+
   @media (prefers-color-scheme: dark) {
     body { color: #f5f4f1; background: #1a1612; }
     a { color: #e8a55c; }
+    .tagline, .card p, footer { color: #9a958c; }
+    .card { background: #221c16; border-color: #2e2620; }
+    .how { background: #221c16; border-color: #2e2620; }
+    .how code { background: #2e2620; color: #f2bc78; }
   }
-  h1 { font-size: 32px; margin: 0 0 4px; }
-  h2 { font-size: 21px; margin: 32px 0 8px; }
-  .meta { color: #8a8580; font-size: 14px; margin-bottom: 24px; }
-  a { color: #b26922; }
-  ul { padding-left: 22px; }
-  li { margin: 6px 0; }
-  .note { font-size: 14px; color: #8a8580; border-top: 1px solid #e5e2db; margin-top: 40px; padding-top: 16px; }
+  @media (max-width: 540px) { .features { grid-template-columns: 1fr; } h1 { font-size: 32px; } }
 </style>
 </head>
 <body>
-  <h1>Privacy Policy</h1>
-  <p class="meta">Keetle · Last updated: May 31, 2026</p>
+  <div class="hero">
+    <!-- The Keetle mark: white kettle on the brand amber tile -->
+    <svg class="tile" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Keetle app icon">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#FFD89A"/><stop offset="0.55" stop-color="#E8A55C"/><stop offset="1" stop-color="#B26922"/>
+        </linearGradient>
+      </defs>
+      <rect width="320" height="320" rx="70" fill="url(#bg)"/>
+      <g fill="#FFFFFF">
+        <path d="M70 200 Q70 152 124 144 L196 144 Q250 152 250 200 L250 248 Q250 272 226 272 L94 272 Q70 272 70 248 Z"/>
+        <path d="M76 196 L42 168 L42 148 L76 172 Z"/>
+        <circle cx="160" cy="100" r="11"/>
+      </g>
+      <path d="M104 168 Q104 102 160 102 Q216 102 216 168" stroke="#FFFFFF" stroke-width="18" fill="none" stroke-linecap="round"/>
+    </svg>
+    <h1>Keetle</h1>
+    <p class="tagline">Know exactly when your kettle boils — no more guessing or babysitting the lid.</p>
+    <a class="badge" href="#" aria-disabled="true">Coming to the App Store<small>iPhone · iOS 18+</small></a>
+  </div>
 
-  <p>
-    Keetle is a kettle boil-timer for iPhone. We built it to respect your privacy:
-    <strong>Keetle has no user accounts, no servers of our own, and no analytics,
-    tracking, or advertising.</strong> This policy explains the limited data the app
-    handles and why.
-  </p>
+  <div class="wrap">
+    <div class="features">
+      <div class="card"><div class="emoji">⏱️</div><h3>Boil time, to the second</h3><p>Physics, not a guess — from your kettle's wattage, the water amount and its starting temperature.</p></div>
+      <div class="card"><div class="emoji">🔒</div><h3>Live on the Lock Screen</h3><p>A live countdown in Live Activity, the Dynamic Island and home-screen widgets while it heats.</p></div>
+      <div class="card"><div class="emoji">📷</div><h3>Scan your kettle</h3><p>Point the camera at the label or barcode to add your exact model — power and capacity filled in.</p></div>
+      <div class="card"><div class="emoji">🍵</div><h3>Tea &amp; coffee temps</h3><p>Premium: boil, then cool to the exact green, oolong or black temperature, with a steep timer.</p></div>
+    </div>
 
-  <h2>What stays on your device</h2>
-  <p>
-    Your kettles and your boil history are stored <strong>only on your device</strong>
-    (via Apple's on-device database) and in your own device/iCloud backups. We never
-    receive, see, or store this information. Deleting the app removes it.
-  </p>
+    <div class="how">
+      <h2>How it works</h2>
+      <p>Keetle uses the heat equation — <code>t = (m·c·ΔT) / (P·η)</code> — combining your kettle's power and efficiency with the water volume and a weather-aware starting temperature, so the estimate fits <em>your</em> kettle, not an average one.</p>
+    </div>
+  </div>
 
-  <h2>Location</h2>
-  <p>
-    With your permission, Keetle uses your approximate location to estimate tap-water
-    and room temperature from local weather, which makes the boil-time estimate more
-    accurate. Weather is provided by <a href="https://www.apple.com/legal/privacy/data/en/weather/">Apple Weather</a>
-    (WeatherKit); location-based weather requests are handled by Apple under Apple's
-    privacy terms. We do not store, log, or share your location. Location is optional —
-    you can deny or revoke it in iOS Settings, and the app still works with a default
-    estimate.
-  </p>
-
-  <h2>Purchases</h2>
-  <p>
-    Keetle Premium is sold through the Apple App Store. Purchases and subscriptions are
-    processed entirely by <a href="https://www.apple.com/legal/privacy/data/en/app-store/">Apple</a>;
-    we receive only your entitlement status (whether Premium is active) — never your
-    name, card, or payment details.
-  </p>
-
-  <h2>Third-party services</h2>
-  <ul>
-    <li><strong>Apple Weather (WeatherKit)</strong> — for temperature estimates.</li>
-    <li><strong>Apple App Store / StoreKit</strong> — for purchases and subscriptions.</li>
-  </ul>
-  <p>
-    No other third parties receive your data. Bundled open-source components (fonts and
-    animations) collect nothing.
-  </p>
-
-  <h2>Data sharing</h2>
-  <p>We do not sell, rent, or share your personal data with anyone. There is nothing to sell — your data stays on your device.</p>
-
-  <h2>Children</h2>
-  <p>Keetle is not directed at children under 13 and collects no personal information from anyone.</p>
-
-  <h2>Your choices</h2>
-  <p>
-    Because your data lives on your device, you are in control: revoke location access in
-    iOS Settings at any time, and delete all app data by removing the app. Manage or
-    cancel a subscription in the App Store (Settings → your name → Subscriptions).
-  </p>
-
-  <h2>Changes</h2>
-  <p>If this policy changes, we will update the date above and post the new version here.</p>
-
-  <h2>Contact</h2>
-  <p>Questions about privacy? Email <a href="mailto:software.consulting.pro@gmail.com">software.consulting.pro@gmail.com</a>.</p>
-
-  <p class="note">
-    This document describes Keetle's actual data practices in plain language. It is a
-    template provided for the app owner to review and adapt before publishing; it is not
-    legal advice.
-  </p>
+  <footer>
+    Keetle · a native iOS kettle boil timer
+    <div><a href="privacy.html">Privacy Policy</a> · <a href="support.html">Support</a></div>
+  </footer>
 </body>
 </html>
