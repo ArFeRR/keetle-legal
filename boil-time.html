@@ -108,6 +108,7 @@
 
   .afterline { text-align: center; font-size: 15px; color: var(--muted);
                margin: 10px auto 0; max-width: 46ch; }
+  #get { scroll-margin-top: 24px; }
   .getit { background: var(--card); border: 1px solid var(--line); border-radius: 18px;
            padding: 22px; margin: 18px 0; text-align: center; }
   .qrbox { width: 168px; margin: 0 auto; padding: 12px; background: #fff;
@@ -264,7 +265,7 @@
       degrees, and decanting between two vessels does it again.</p>
   </div>
 
-  <div class="getit">
+  <div class="getit" id="get">
     <h2 style="margin:0 0 6px; font-size:19px">If you want this on the kettle itself</h2>
     <p class="note" style="margin:0 0 16px">Keetle recognises your kettle model, corrects for your
       altitude automatically, and puts the remaining time on the Lock Screen and Dynamic Island.
@@ -430,6 +431,28 @@
   var isIOS = /iPhone|iPad|iPod/.test(ua) ||
               (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
   if (isIOS) { $("get-qr").hidden = true; $("get-btn").hidden = false; }
+
+
+  // On a laptop an App Store link is a dead end — the store page cannot install anything
+  // there. So on desktop every early mention points at the QR block further down instead,
+  // which IS actionable; on iOS they stay pointing at the App Store. Measured 2026-08-15:
+  // the QR sits at 87–88% depth on both pages, so without this it is reached by nobody.
+  (function () {
+    var ua = navigator.userAgent || "";
+    var iOS = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+    if (iOS) return;
+    var block = document.getElementById("get");
+    if (!block) return;
+    // Plain anchor navigation, no click handler — the browser has known how to jump to a
+    // fragment since forever, so this works with JS off as well. Deliberately NOT
+    // `scroll-behavior: smooth`: the jump is ~3700px, and gliding that far reads as nothing
+    // happening. Measured 2026-08-15 — with smooth on, the scroll did not land at all here.
+    Array.prototype.forEach.call(
+      document.querySelectorAll('a[href*="apps.apple.com"]'), function (a) {
+        if (a.closest("#get")) return;          // the block's own button stays a real link
+        a.setAttribute("href", "#get");
+      });
+  })();
 
   render();
 })();
