@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why an American kettle takes twice as long — Keetle</title>
+<meta name="description" content="A litre of water needs 335 kJ wherever you stand. The only question is how fast the wall delivers it — which is why kettles never caught on in American kitchens, and why altitude speeds them up.">
+<link rel="canonical" href="https://arferr.github.io/keetle-legal/kettle-physics.html">
+<style>
+  /* Keetle's palette — Design.md §4.5 (warm amber / sepia). Shared with boil-time.html. */
+  :root {
+    color-scheme: light dark;
+    --amber-50:#FFF8F0; --amber-100:#FCEFE2; --amber-200:#F6D9B7;
+    --amber-400:#E8A55C; --amber-500:#D4862E; --amber-600:#B26922; --amber-700:#8B4F18;
+    --n-50:#FAFAF7; --n-200:#E5E2DB; --n-500:#8A8580; --n-900:#1C1B19;
+    --bg:var(--n-50); --card:#fff; --text:var(--n-900); --muted:#6b6760; --line:var(--n-200);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --amber-50:#1A1612; --amber-100:#221C16; --amber-200:#2E2620;
+      --amber-400:#C88B43; --amber-500:#E8A55C; --amber-600:#F2BC78; --amber-700:#F8D2A0;
+      --bg:#1A1612; --card:#221C16; --text:#F5F4F1; --muted:#9a958c; --line:#2E2620;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 18px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0; color: var(--text); background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--amber-600); }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+
+  header { text-align: center; padding: 48px 20px 4px; }
+  .tile { width: 64px; height: 64px; margin: 0 auto 20px; display: block;
+          border-radius: 16px; box-shadow: 0 8px 22px rgba(178,105,34,0.26); }
+  h1 { font-family: ui-rounded, -apple-system, sans-serif;
+       font-size: 34px; line-height: 1.15; margin: 0 0 10px; letter-spacing: -0.5px; }
+  .kicker { font-size: 15px; color: var(--muted); margin: 0 0 28px; }
+
+  h2 { font-family: ui-rounded, -apple-system, sans-serif;
+       font-size: 24px; margin: 38px 0 10px; letter-spacing: -0.3px; }
+  p { margin: 0 0 18px; }
+  em { font-style: italic; }
+
+  /* Numbers get their own frame — they are the argument, not decoration. */
+  .figure { background: var(--amber-50); border: 1px solid var(--amber-200);
+            border-radius: 18px; padding: 18px 20px; margin: 22px 0; }
+  .figure table { width: 100%; border-collapse: collapse; font-size: 16px;
+                  font-variant-numeric: tabular-nums; }
+  .figure td { padding: 5px 0; }
+  .figure td:last-child { text-align: right; font-weight: 600; white-space: nowrap; }
+  .figure .cap { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+  .eq { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 16px;
+        background: var(--amber-100); color: var(--amber-700);
+        padding: 14px 16px; border-radius: 12px; margin: 18px 0; white-space: pre; overflow-x: auto; }
+  code { background: var(--amber-100); padding: 2px 7px; border-radius: 7px;
+         font-size: 0.92em; color: var(--amber-700); }
+  ul { padding-left: 20px; } li { margin-bottom: 10px; }
+
+  .try { background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+         padding: 20px; margin: 30px 0; text-align: center; }
+  .try p { margin: 0 0 12px; font-size: 16px; color: var(--muted); }
+  .cta { display: inline-block; padding: 12px 22px; border-radius: 999px;
+         background: linear-gradient(135deg, #ffd89a, #e8a55c 55%, #b26922);
+         color: #3d2207; font-weight: 700; text-decoration: none; font-size: 16px;
+         box-shadow: 0 6px 18px rgba(178,105,34,0.3); }
+  .cta small { display: block; font-weight: 600; font-size: 12px; opacity: .75; }
+
+  .disclosure { border-top: 1px solid var(--line); margin-top: 40px; padding-top: 20px;
+                font-size: 16px; color: var(--muted); }
+  footer { text-align: center; color: var(--n-500); font-size: 14px; padding: 30px 20px 56px; }
+  footer a { margin: 0 10px; }
+  @media (max-width: 560px) { h1 { font-size: 28px; } h2 { font-size: 21px; } body { font-size: 17px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="tile" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Keetle">
+    <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFD89A"/><stop offset="0.55" stop-color="#E8A55C"/><stop offset="1" stop-color="#B26922"/>
+    </linearGradient></defs>
+    <rect width="320" height="320" rx="70" fill="url(#bg)"/>
+    <g fill="#FFFFFF">
+      <path d="M70 200 Q70 152 124 144 L196 144 Q250 152 250 200 L250 248 Q250 272 226 272 L94 272 Q70 272 70 248 Z"/>
+      <path d="M76 196 L42 168 L42 148 L76 172 Z"/>
+      <circle cx="160" cy="100" r="11"/>
+    </g>
+    <path d="M104 168 Q104 102 160 102 Q216 102 216 168" stroke="#FFFFFF" stroke-width="18" fill="none" stroke-linecap="round"/>
+  </svg>
+</header>
+
+<div class="wrap">
+  <h1>Why an American kettle takes twice as long, and what actually sets boil time</h1>
+  <p class="kicker">Four numbers decide it, and none of them is the price of the kettle.</p>
+
+  <p>Every few months someone on the internet is baffled that Americans don't really use electric
+  kettles. The usual answers are cultural — coffee country, microwave habits, nobody drinks tea.
+  There is a simpler answer, and it's in the wall.</p>
+
+  <p>A litre of water from 20 °C to boiling needs a fixed amount of energy. Not approximately:
+  exactly, and you can compute it on a napkin.</p>
+
+  <div class="eq">Q = m · c · ΔT
+  = 1 kg × 4186 J/(kg·K) × 80 K
+  = 335 kJ</div>
+
+  <p>That number doesn't care about your kettle, your altitude, or your opinion of tea. The only
+  question is how fast you can deliver 335 kJ, and that is the wattage on the sticker.</p>
+
+  <div class="figure">
+    <table>
+      <tr><td>1440 W — US, 120 V on a 15 A circuit</td><td>4.6 min</td></tr>
+      <tr><td>1800 W — US, practical maximum</td><td>3.6 min</td></tr>
+      <tr><td>2300 W — EU, 230 V at 10 A</td><td>2.9 min</td></tr>
+      <tr><td>3000 W — UK, 230 V at 13 A</td><td>2.2 min</td></tr>
+    </table>
+    <p class="cap">One litre from 20 °C, at 85 % efficiency — about right for a decent electric kettle.</p>
+  </div>
+
+  <p>The American kettle isn't worse. It is plugged into half the voltage, and a US branch circuit
+  tops out around 1800 W for a plug-in appliance — the NEC's 80 % continuous-load rule turns a 15 A
+  circuit into about 1440 W of comfortable draw. The British kettle gets 3000 W from a 13 A plug
+  because the voltage is nearly double. Same water, same physics, twice the wait.</p>
+
+  <p>That is the whole mystery. A country where boiling water takes four and a half minutes doesn't
+  build a habit around it; a country where it takes two does.</p>
+
+  <div class="try">
+    <p>All four numbers, adjustable, with the arithmetic shown:</p>
+    <a class="cta" href="boil-time.html">Boil-time calculator<small>runs in this page, no app needed</small></a>
+  </div>
+
+  <h2>Where the missing 15 % goes</h2>
+  <p>The 85 % isn't a fudge factor, it's four separate leaks:</p>
+  <ul>
+    <li><strong>The kettle body.</strong> A steel or glass jug has real thermal mass and it comes up
+    to temperature alongside the water. You paid for that heat and you don't drink it.</li>
+    <li><strong>Evaporation.</strong> Above roughly 60 °C the surface starts giving up water. Every
+    gram that leaves takes about 2260 J of latent heat with it — far more per gram than heating it
+    did.</li>
+    <li><strong>Ambient loss.</strong> A jug at 90 °C in a 20 °C kitchen radiates and convects the
+    whole time.</li>
+    <li><strong>The element itself</strong>, and the few seconds of thermostat overshoot after the
+    click.</li>
+  </ul>
+  <p>Cheap and expensive kettles differ here by a handful of percent. They differ far more in how
+  accurately they stop.</p>
+
+  <h2>Altitude does the opposite of what people expect</h2>
+  <p>Water boils when its vapour pressure matches the air pressure above it, so at altitude it boils
+  cooler. Run the barometric formula into Antoine's equation and you get:</p>
+
+  <div class="figure">
+    <table>
+      <tr><td>Sea level</td><td>100.0 °C</td></tr>
+      <tr><td>500 m</td><td>98.3 °C</td></tr>
+      <tr><td>1000 m</td><td>96.7 °C</td></tr>
+      <tr><td>2000 m</td><td>93.4 °C</td></tr>
+      <tr><td>3000 m</td><td>90.0 °C</td></tr>
+    </table>
+  </div>
+
+  <p>Here is the part people get backwards. At 2000 m your kettle finishes <em>sooner</em> — 164 s
+  instead of 179 s for a litre — because it only has to climb to 93.4 °C. Boiling is faster up a
+  mountain, not slower.</p>
+
+  <p>What's slower is everything you do <em>with</em> the water. Pasta, eggs and rice cook by
+  temperature, not by the word "boiling", and 93 °C is a genuinely different cooking environment.
+  Denver's boiling water is not sea-level boiling water with a different label on it.</p>
+
+  <p>And there is no fixing it by waiting. Once it boils, that <em>is</em> the maximum temperature
+  water reaches at that pressure. Leaving the kettle on longer converts electricity into steam and
+  nothing else.</p>
+
+  <h2>The temperature you actually want is almost never 100 °C</h2>
+  <p>Which leads to the thing that ruins more tea than any other single mistake: most of what people
+  brew does not want boiling water.</p>
+
+  <div class="figure">
+    <table>
+      <tr><td>Green tea</td><td>70–80 °C</td></tr>
+      <tr><td>White tea</td><td>75–85 °C</td></tr>
+      <tr><td>Matcha</td><td>70–80 °C</td></tr>
+      <tr><td>Oolong</td><td>85–95 °C</td></tr>
+      <tr><td>AeroPress</td><td>80–92 °C</td></tr>
+      <tr><td>Pour-over coffee</td><td>90–96 °C</td></tr>
+      <tr><td>French press</td><td>92–96 °C</td></tr>
+      <tr><td>Black tea</td><td>95–100 °C</td></tr>
+    </table>
+  </div>
+
+  <p>Above its range, green tea extracts tannins fast and turns bitter in seconds — and no steeping
+  adjustment recovers it, because you have changed <em>what</em> dissolved, not how much.</p>
+
+  <p>You don't need a variable-temperature kettle to hit these. You need to know how the water falls,
+  and the shape of that is Newton's law of cooling: the rate is proportional to the gap to the room,
+  so it drops fastest in the first seconds and then flattens out. The exact rate is not a universal
+  constant — it depends on the volume, the vessel, and above all whether the lid is on, and it varies
+  enough between kettles that a number quoted here would be wrong in your kitchen. Time your own once
+  with a cheap probe and you have it forever.</p>
+
+  <p>Two shortcuts that need no measurement at all. Pouring into a room-temperature cup costs you
+  several degrees immediately, because the cup has thermal mass too — that alone can take 95 °C to
+  somewhere near the black-tea range. And decanting once between two vessels does it again, which is
+  exactly what the Chinese gongfu pitcher has been doing for a few centuries.</p>
+
+  <p>The number that matters is not "boiling". It's the four inputs — volume, wattage, starting
+  temperature, and the boiling point where you're standing — and every one of them is knowable
+  before you flip the switch.</p>
+
+  <p class="disclosure"><strong>Disclosure:</strong> I wrote an iOS app,
+  <a href="https://apps.apple.com/app/id6779433024?ct=physics-article">Keetle</a>, that does this
+  arithmetic for your specific kettle and altitude and puts the countdown on the Lock Screen. The
+  physics above is the whole of it and works fine on a napkin — the
+  <a href="boil-time.html">calculator on this site</a> needs no app at all. I built the app because
+  I got tired of the napkin. Happy to go through any of the numbers.</p>
+</div>
+
+<footer>
+  Keetle · a native iOS kettle boil timer
+  <div><a href="index.html">Home</a> · <a href="boil-time.html">Calculator</a> ·
+       <a href="privacy.html">Privacy Policy</a> · <a href="support.html">Support</a></div>
+</footer>
+</body>
+</html>

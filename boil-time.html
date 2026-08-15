@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How long does a kettle take to boil? — Keetle</title>
+<meta name="description" content="Work out exactly how long your kettle takes to boil from its wattage, the water amount, the starting temperature and your altitude. The physics, shown — nothing is sent anywhere.">
+<link rel="canonical" href="https://arferr.github.io/keetle-legal/boil-time.html">
+<style>
+  /* Keetle's palette — Design.md §4.5 (warm amber / sepia). */
+  :root {
+    color-scheme: light dark;
+    --amber-50:#FFF8F0; --amber-100:#FCEFE2; --amber-200:#F6D9B7;
+    --amber-400:#E8A55C; --amber-500:#D4862E; --amber-600:#B26922; --amber-700:#8B4F18;
+    --n-50:#FAFAF7; --n-200:#E5E2DB; --n-500:#8A8580; --n-700:#4D4A45; --n-900:#1C1B19;
+    --steam:#B8D4DC; --heat:#E85D1F; --ready:#4CAF50;
+    --bg:var(--n-50); --card:#fff; --text:var(--n-900); --muted:#6b6760; --line:var(--n-200);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --amber-50:#1A1612; --amber-100:#221C16; --amber-200:#2E2620;
+      --amber-400:#C88B43; --amber-500:#E8A55C; --amber-600:#F2BC78; --amber-700:#F8D2A0;
+      --bg:#1A1612; --card:#221C16; --text:#F5F4F1; --muted:#9a958c; --line:#2E2620;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0; color: var(--text); background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--amber-600); }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+
+  header { text-align: center; padding: 48px 20px 8px; }
+  .tile { width: 72px; height: 72px; margin: 0 auto 18px; display: block;
+          border-radius: 18px; box-shadow: 0 8px 22px rgba(178,105,34,0.26); }
+  h1 { font-family: ui-rounded, -apple-system, sans-serif;
+       font-size: 34px; line-height: 1.12; margin: 0 0 8px; letter-spacing: -0.5px; }
+  .tagline { font-size: 18px; color: var(--muted); margin: 0 auto; max-width: 40ch; }
+
+  /* ---- the answer, which is the whole point of the page ---- */
+  .answer {
+    background: linear-gradient(135deg, #ffd89a, #e8a55c 55%, #b26922);
+    border-radius: 22px; padding: 26px 22px; text-align: center; color: #3d2207;
+    box-shadow: 0 10px 28px rgba(178,105,34,0.28); margin: 26px 0 8px;
+  }
+  .answer .time { font-family: ui-rounded, -apple-system, sans-serif;
+                  font-size: 54px; font-weight: 800; line-height: 1; letter-spacing: -1px;
+                  font-variant-numeric: tabular-nums; }
+  .answer .sub { font-size: 15px; font-weight: 600; opacity: .8; margin-top: 8px; }
+  .answer .sub b { font-weight: 800; opacity: 1; }
+
+  /* ---- inputs ---- */
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+           padding: 20px; margin: 18px 0; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  label { display: block; font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+  input[type=number], select {
+    width: 100%; padding: 11px 12px; font-size: 17px; font-family: inherit;
+    color: var(--text); background: var(--bg);
+    border: 1px solid var(--line); border-radius: 12px;
+  }
+  input[type=number]:focus, select:focus { outline: 2px solid var(--amber-400); outline-offset: 1px; }
+  input[type=range] { width: 100%; accent-color: var(--amber-500); }
+  .field { margin-bottom: 14px; }
+  .hint { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+  .presets button {
+    font: inherit; font-size: 14px; padding: 7px 12px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--bg); color: var(--text);
+  }
+  .presets button:hover { border-color: var(--amber-400); }
+  .presets button[aria-pressed="true"] { background: var(--amber-200); border-color: var(--amber-400);
+                                         color: var(--amber-700); font-weight: 600; }
+
+  /* ---- the working, shown ---- */
+  .work { background: var(--amber-50); border: 1px solid var(--amber-200); border-radius: 18px;
+          padding: 20px; margin: 18px 0; }
+  .work h2 { margin: 0 0 10px; font-size: 19px; }
+  .work table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .work td { padding: 5px 0; vertical-align: baseline; }
+  .work td:last-child { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .work .total td { border-top: 1px solid var(--amber-200); padding-top: 10px; font-weight: 700; }
+  code { background: var(--amber-100); padding: 2px 8px; border-radius: 8px;
+         font-size: 15px; color: var(--amber-700); }
+
+  .note { font-size: 15px; color: var(--muted); }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+  .mini { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+  .mini h3 { margin: 0 0 4px; font-size: 16px; }
+  .mini p { margin: 0; font-size: 14px; color: var(--muted); }
+  .mini .big { font-family: ui-rounded, -apple-system, sans-serif;
+               font-size: 26px; font-weight: 700; color: var(--amber-600);
+               font-variant-numeric: tabular-nums; }
+
+  .temps { width: 100%; border-collapse: collapse; font-size: 15px; margin-top: 6px; }
+  .temps th { text-align: left; font-size: 13px; color: var(--muted); font-weight: 600; padding-bottom: 6px; }
+  .temps td { padding: 6px 0; border-top: 1px solid var(--line); }
+  .temps td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .cta { display: inline-block; margin-top: 6px; padding: 12px 22px; border-radius: 999px;
+         background: linear-gradient(135deg, #ffd89a, #e8a55c 55%, #b26922);
+         color: #3d2207; font-weight: 700; text-decoration: none; font-size: 16px;
+         box-shadow: 0 6px 18px rgba(178,105,34,0.3); }
+  .cta small { display: block; font-weight: 600; font-size: 12px; opacity: .75; }
+
+  .afterline { text-align: center; font-size: 15px; color: var(--muted);
+               margin: 10px auto 0; max-width: 46ch; }
+  .getit { background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+           padding: 22px; margin: 18px 0; text-align: center; }
+  .qrbox { width: 168px; margin: 0 auto; padding: 12px; background: #fff;
+           border: 1px solid var(--line); border-radius: 14px; }
+  .qrbox .qr { width: 100%; height: auto; display: block; }
+  @media (prefers-color-scheme: dark) { .qrbox { background: #f5f4f1; } }
+  footer { text-align: center; color: var(--n-500); font-size: 14px; padding: 36px 20px 56px; }
+  footer a { margin: 0 10px; }
+  @media (max-width: 560px) {
+    .row, .cards { grid-template-columns: 1fr; }
+    h1 { font-size: 28px; }
+    .answer .time { font-size: 44px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="tile" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Keetle">
+    <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFD89A"/><stop offset="0.55" stop-color="#E8A55C"/><stop offset="1" stop-color="#B26922"/>
+    </linearGradient></defs>
+    <rect width="320" height="320" rx="70" fill="url(#bg)"/>
+    <g fill="#FFFFFF">
+      <path d="M70 200 Q70 152 124 144 L196 144 Q250 152 250 200 L250 248 Q250 272 226 272 L94 272 Q70 272 70 248 Z"/>
+      <path d="M76 196 L42 168 L42 148 L76 172 Z"/>
+      <circle cx="160" cy="100" r="11"/>
+    </g>
+    <path d="M104 168 Q104 102 160 102 Q216 102 216 168" stroke="#FFFFFF" stroke-width="18" fill="none" stroke-linecap="round"/>
+  </svg>
+  <h1>How long does a kettle take to boil?</h1>
+  <p class="tagline">Four numbers decide it. Change one and watch what happens.</p>
+</header>
+
+<div class="wrap">
+
+  <div class="answer">
+    <div class="time" id="out-time">2:56</div>
+    <div class="sub" id="out-sub">1.0 L · 2200 W · from 20 °C · boiling at <b>100.0 °C</b></div>
+  </div>
+
+  <p class="afterline" id="afterline">Keetle runs this same calculation on your phone and counts it
+    down on the Lock Screen. <a href="https://apps.apple.com/app/id6779433024?ct=boil-calc-inline">See it →</a></p>
+
+  <div class="panel">
+    <div class="row">
+      <div class="field">
+        <label for="volume">Water</label>
+        <input type="number" id="volume" value="1" min="0.1" max="5" step="0.1" inputmode="decimal">
+        <div class="hint" id="hint-volume">litres</div>
+      </div>
+      <div class="field">
+        <label for="power">Kettle power</label>
+        <input type="number" id="power" value="2200" min="300" max="4000" step="50" inputmode="numeric">
+        <div class="presets" id="presets">
+          <button type="button" data-w="1500">US 1500 W</button>
+          <button type="button" data-w="2200" aria-pressed="true">EU 2200 W</button>
+          <button type="button" data-w="3000">UK 3000 W</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="start">Starting temperature</label>
+        <input type="number" id="start" value="20" min="0" max="99" step="1" inputmode="numeric">
+        <div class="hint">°C — tap water is usually 10–20 °C</div>
+      </div>
+      <div class="field">
+        <label for="altitude">Altitude</label>
+        <input type="number" id="altitude" value="0" min="0" max="5000" step="50" inputmode="numeric">
+        <div class="hint" id="hint-alt">metres above sea level</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="eff">Kettle efficiency — <span id="eff-val">85</span>%</label>
+      <input type="range" id="eff" value="85" min="60" max="100" step="1">
+      <div class="hint">Most electric kettles land near 85%. The rest heats the jug, escapes as steam, and leaks into the room.</div>
+    </div>
+
+    <div class="field" style="margin:0">
+      <label for="units">Units</label>
+      <select id="units">
+        <option value="metric" selected>Litres · °C · metres</option>
+        <option value="us">US cups · °F · feet</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="work">
+    <h2>The working</h2>
+    <p class="note" style="margin-top:0">Heating water is one equation. <code>t = m·c·ΔT / (P·η)</code></p>
+    <table>
+      <tr><td>Water mass <span class="note">(m)</span></td><td id="w-mass">1.00 kg</td></tr>
+      <tr><td>Specific heat of water <span class="note">(c)</span></td><td>4186 J/(kg·K)</td></tr>
+      <tr><td>Temperature climb <span class="note">(ΔT)</span></td><td id="w-dt">80.0 K</td></tr>
+      <tr><td>Energy needed <span class="note">(m·c·ΔT)</span></td><td id="w-energy">335 kJ</td></tr>
+      <tr><td>Power actually delivered <span class="note">(P·η)</span></td><td id="w-power">1870 W</td></tr>
+      <tr class="total"><td>Time</td><td id="w-time">179 s</td></tr>
+    </table>
+  </div>
+
+  <div class="cards">
+    <div class="mini">
+      <h3>Boiling point where you are</h3>
+      <div class="big" id="m-bp">100.0 °C</div>
+      <p id="m-bp-note">At sea level, water boils at 100 °C.</p>
+    </div>
+    <div class="mini">
+      <h3>Same water, a UK kettle</h3>
+      <div class="big" id="m-uk">2:09</div>
+      <p id="m-uk-note">3000 W from a 13 A plug at 230 V.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin:0 0 4px; font-size:19px">Why an American kettle is slower</h2>
+    <p class="note" style="margin-top:0">
+      335 kJ is 335 kJ wherever you stand. The only question is how fast the wall can deliver it —
+      and a US 120 V outlet on a 15 A circuit tops out near 1500 W for a plug-in appliance, while
+      a UK plug pulls 3000 W from 230 V. Same water, same physics, twice the wait. That is most of
+      the answer to why kettles never caught on in American kitchens.
+    </p>
+    <p style="margin:10px 0 0"><a href="kettle-physics.html">The longer version →</a></p>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin:0 0 4px; font-size:19px">Altitude does the opposite of what people expect</h2>
+    <p class="note" style="margin-top:0">
+      Higher up, water boils <em>cooler</em> — so the kettle finishes <em>sooner</em>, because it has
+      less climbing to do. What gets slower is everything you cook in that water. And no amount of
+      extra boiling raises the temperature: once it boils, that is the maximum at that pressure.
+    </p>
+  </div>
+
+  <div class="panel">
+    <h2 style="margin:0 0 6px; font-size:19px">What temperature you actually want</h2>
+    <p class="note" style="margin:0 0 4px">Most of what people brew does not want boiling water.</p>
+    <table class="temps">
+      <tr><th>Drink</th><th style="text-align:right">Water</th></tr>
+      <tr><td>Green tea</td><td>70–80 °C</td></tr>
+      <tr><td>White tea</td><td>75–85 °C</td></tr>
+      <tr><td>Matcha</td><td>70–80 °C</td></tr>
+      <tr><td>Oolong</td><td>85–95 °C</td></tr>
+      <tr><td>AeroPress</td><td>80–92 °C</td></tr>
+      <tr><td>Pour-over coffee</td><td>90–96 °C</td></tr>
+      <tr><td>French press</td><td>92–96 °C</td></tr>
+      <tr><td>Black tea</td><td>95–100 °C</td></tr>
+    </table>
+    <p class="hint">Above its range green tea pulls tannins in seconds and turns bitter — and steeping
+      it shorter does not undo that, because what dissolved changed, not just how much. You do not
+      need a variable-temperature kettle: pouring into a room-temperature cup already costs several
+      degrees, and decanting between two vessels does it again.</p>
+  </div>
+
+  <div class="getit">
+    <h2 style="margin:0 0 6px; font-size:19px">If you want this on the kettle itself</h2>
+    <p class="note" style="margin:0 0 16px">Keetle recognises your kettle model, corrects for your
+      altitude automatically, and puts the remaining time on the Lock Screen and Dynamic Island.
+      Everything on this page works without it — nothing here is a teaser.</p>
+
+    <!-- Most people reading this are on a desktop, where an App Store button does nothing at all.
+         The QR is the honest route across the device gap; iOS visitors get the button instead. -->
+    <div id="get-qr">
+      <div class="qrbox"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" class="qr" role="img" aria-label="QR code to Keetle on the App Store"><path class="qrline" stroke="#1c1b19" d="M2 2.5h7m3 0h2m1 0h1m1 0h5m1 0h3m2 0h7m-33 1h1m5 0h1m2 0h1m1 0h1m1 0h6m1 0h1m2 0h1m2 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m2 0h1m1 0h1m1 0h1m3 0h1m1 0h2m5 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m5 0h5m1 0h1m3 0h1m3 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m6 0h2m2 0h1m2 0h1m2 0h1m2 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m1 0h1m3 0h1m2 0h2m1 0h2m1 0h1m4 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-24 1h4m2 0h5m1 0h1m-22 1h1m2 0h1m1 0h2m1 0h1m1 0h1m2 0h1m2 0h1m1 0h1m2 0h1m1 0h3m1 0h1m-27 1h1m1 0h1m7 0h1m1 0h2m1 0h2m2 0h1m1 0h1m2 0h3m4 0h1m-32 1h1m1 0h5m1 0h1m2 0h3m1 0h1m1 0h2m6 0h3m1 0h3m-31 1h4m2 0h2m3 0h1m1 0h1m2 0h1m1 0h4m1 0h2m1 0h2m2 0h1m-33 1h1m1 0h5m1 0h3m3 0h4m2 0h2m2 0h1m1 0h2m1 0h1m-30 1h1m1 0h2m6 0h3m1 0h2m2 0h5m1 0h5m2 0h2m-33 1h1m1 0h1m2 0h6m1 0h2m1 0h2m5 0h2m1 0h2m2 0h3m-32 1h3m2 0h1m2 0h1m1 0h1m3 0h1m1 0h6m1 0h2m1 0h2m1 0h1m1 0h1m-32 1h1m1 0h1m1 0h3m1 0h2m5 0h1m1 0h1m2 0h4m2 0h1m1 0h2m1 0h1m-31 1h5m1 0h2m2 0h1m4 0h1m5 0h4m1 0h1m1 0h1m-27 1h5m1 0h1m1 0h1m2 0h1m2 0h2m1 0h1m3 0h2m4 0h1m1 0h1m-33 1h2m1 0h2m2 0h1m1 0h1m1 0h1m5 0h1m1 0h5m1 0h3m3 0h2m-32 1h2m1 0h1m1 0h2m2 0h3m2 0h1m1 0h3m1 0h3m1 0h1m1 0h1m3 0h1m-28 1h2m1 0h1m1 0h5m1 0h1m1 0h1m2 0h2m3 0h3m1 0h1m1 0h2m-33 1h4m1 0h2m6 0h2m1 0h1m1 0h2m4 0h3m2 0h1m2 0h1m-32 1h1m1 0h1m6 0h1m1 0h1m2 0h1m2 0h4m2 0h1m1 0h2m-28 1h1m2 0h2m1 0h1m1 0h2m1 0h3m2 0h2m2 0h2m2 0h6m1 0h2m-25 1h7m1 0h4m2 0h1m1 0h1m3 0h2m1 0h2m-33 1h7m3 0h1m5 0h3m1 0h1m3 0h1m1 0h1m1 0h3m-31 1h1m5 0h1m1 0h1m1 0h2m1 0h3m1 0h1m1 0h4m1 0h1m3 0h1m3 0h1m-33 1h1m1 0h3m1 0h1m5 0h1m5 0h5m1 0h6m2 0h1m-33 1h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h3m9 0h1m1 0h1m-29 1h1m1 0h3m1 0h1m4 0h3m1 0h2m1 0h1m5 0h2m2 0h2m2 0h1m-33 1h1m5 0h1m2 0h2m3 0h1m2 0h1m1 0h1m1 0h2m1 0h1m4 0h1m-30 1h7m1 0h2m2 0h2m1 0h1m5 0h1m2 0h3m1 0h1m2 0h1"/></svg></div>
+      <p class="hint" style="margin:10px 0 0">Scan with the phone you'd actually boil water next to.</p>
+    </div>
+    <div id="get-btn" hidden>
+      <a class="cta" href="https://apps.apple.com/app/id6779433024?ct=boil-calc-ios">Keetle for iPhone<small>free, with a paid unlock</small></a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Keetle · a native iOS kettle boil timer
+  <div><a href="index.html">Home</a> · <a href="privacy.html">Privacy Policy</a> · <a href="support.html">Support</a></div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var C = 4186;                 // J/(kg·K) — specific heat of water
+  var $ = function (id) { return document.getElementById(id); };
+
+  // Boiling point from altitude: barometric formula → Antoine's equation for water.
+  function boilingPoint(metres) {
+    var p = 101325 * Math.pow(1 - 2.25577e-5 * metres, 5.25588);   // Pa
+    var mmHg = p / 133.322;
+    var A = 8.07131, B = 1730.63, Cc = 233.426;                     // Antoine, mmHg / °C
+    return B / (A - Math.log(mmHg) / Math.LN10) - Cc;
+  }
+
+  function seconds(litres, watts, startC, boilC, eff) {
+    if (!(watts > 0) || !(eff > 0) || boilC <= startC) return NaN;
+    return litres * C * (boilC - startC) / (watts * eff);
+  }
+
+  function mmss(s) {
+    if (!isFinite(s) || s <= 0) return "—";
+    var m = Math.floor(s / 60), r = Math.round(s - m * 60);
+    if (r === 60) { m += 1; r = 0; }
+    return m + ":" + (r < 10 ? "0" : "") + r;
+  }
+
+  var toC  = function (f) { return (f - 32) * 5 / 9; };
+  var toF  = function (c) { return c * 9 / 5 + 32; };
+  var CUP_L = 0.2365882365;      // one US customary cup
+  var FT_M  = 0.3048;
+
+  function read() {
+    var us = $("units").value === "us";
+    var vol = parseFloat($("volume").value) || 0;
+    var start = parseFloat($("start").value);
+    var alt = parseFloat($("altitude").value) || 0;
+    return {
+      us: us,
+      litres: us ? vol * CUP_L : vol,
+      watts: parseFloat($("power").value) || 0,
+      startC: us ? toC(start) : start,
+      metres: us ? alt * FT_M : alt,
+      eff: (parseFloat($("eff").value) || 85) / 100
+    };
+  }
+
+  var fmtT = function (c, us) { return (us ? toF(c).toFixed(1) + " °F" : c.toFixed(1) + " °C"); };
+
+  function render() {
+    var v = read();
+    var bp = boilingPoint(v.metres);
+    var t = seconds(v.litres, v.watts, v.startC, bp, v.eff);
+
+    $("out-time").textContent = mmss(t);
+    var volTxt = v.us ? (v.litres / CUP_L).toFixed(1) + " cups" : v.litres.toFixed(1) + " L";
+    $("out-sub").innerHTML = volTxt + " · " + Math.round(v.watts) + " W · from " +
+      fmtT(v.startC, v.us) + " · boiling at <b>" + fmtT(bp, v.us) + "</b>";
+
+    // the working
+    var mass = v.litres;                                  // 1 L of water ≈ 1 kg
+    var dT = Math.max(0, bp - v.startC);
+    var energy = mass * C * dT;
+    $("w-mass").textContent = mass.toFixed(2) + " kg";
+    $("w-dt").textContent = dT.toFixed(1) + " K";
+    $("w-energy").textContent = Math.round(energy / 1000) + " kJ";
+    $("w-power").textContent = Math.round(v.watts * v.eff) + " W";
+    $("w-time").textContent = isFinite(t) ? Math.round(t) + " s" : "—";
+
+    // altitude card
+    $("m-bp").textContent = fmtT(bp, v.us);
+    var altTxt = v.us ? Math.round(v.metres / FT_M) + " ft" : Math.round(v.metres) + " m";
+    $("m-bp-note").textContent = v.metres < 1
+      ? "At sea level, water boils at 100 °C."
+      : "At " + altTxt + ", water boils " + (100 - bp).toFixed(1) + " °C cooler — so the kettle finishes sooner.";
+
+    // the UK comparison, which is the point of the page
+    var uk = seconds(v.litres, 3000, v.startC, bp, v.eff);
+    $("m-uk").textContent = mmss(uk);
+    var diff = t - uk;
+    $("m-uk-note").textContent = (Math.abs(diff) < 2 || !isFinite(diff))
+      ? "3000 W from a 13 A plug at 230 V."
+      : (diff > 0 ? Math.round(diff) + " s faster than yours." : Math.round(-diff) + " s slower than yours.");
+
+    $("eff-val").textContent = Math.round(v.eff * 100);
+  }
+
+  // Units switch rewrites the numbers in place, so the answer does not jump.
+  var lastUnits = "metric";
+  $("units").addEventListener("change", function () {
+    var us = $("units").value === "us";
+    if (us === (lastUnits === "us")) return;
+    var vol = parseFloat($("volume").value) || 0;
+    var start = parseFloat($("start").value) || 0;
+    var alt = parseFloat($("altitude").value) || 0;
+    if (us) {
+      $("volume").value = (vol / CUP_L).toFixed(1);
+      $("start").value = Math.round(toF(start));
+      $("altitude").value = Math.round(alt / FT_M);
+      $("hint-volume").textContent = "US cups";
+      $("hint-alt").textContent = "feet above sea level";
+      $("volume").step = "0.5"; $("volume").max = "20";
+      $("altitude").step = "100"; $("altitude").max = "16000";
+    } else {
+      $("volume").value = (vol * CUP_L).toFixed(1);
+      $("start").value = Math.round(toC(start));
+      $("altitude").value = Math.round(alt * FT_M);
+      $("hint-volume").textContent = "litres";
+      $("hint-alt").textContent = "metres above sea level";
+      $("volume").step = "0.1"; $("volume").max = "5";
+      $("altitude").step = "50"; $("altitude").max = "5000";
+    }
+    lastUnits = us ? "us" : "metric";
+    render();
+  });
+
+  ["volume", "power", "start", "altitude", "eff"].forEach(function (id) {
+    $(id).addEventListener("input", function () {
+      if (id === "power") {
+        var w = parseFloat($("power").value);
+        Array.prototype.forEach.call($("presets").children, function (b) {
+          b.setAttribute("aria-pressed", String(parseFloat(b.dataset.w) === w));
+        });
+      }
+      render();
+    });
+  });
+
+  Array.prototype.forEach.call($("presets").children, function (btn) {
+    btn.addEventListener("click", function () {
+      $("power").value = btn.dataset.w;
+      Array.prototype.forEach.call($("presets").children, function (b) {
+        b.setAttribute("aria-pressed", String(b === btn));
+      });
+      render();
+    });
+  });
+
+  // An App Store button on a laptop is a dead end; a QR crosses the device gap. iOS visitors
+  // get the real button. Both are in the HTML, so this works with JS off too (QR shows).
+  var ua = navigator.userAgent || "";
+  var isIOS = /iPhone|iPad|iPod/.test(ua) ||
+              (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  if (isIOS) { $("get-qr").hidden = true; $("get-btn").hidden = false; }
+
+  render();
+})();
+</script>
+</body>
+</html>
