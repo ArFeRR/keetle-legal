@@ -77,12 +77,34 @@
   @media (prefers-color-scheme: dark) { .qrbox { background: #f5f4f1; } }
   .disclosure { border-top: 1px solid var(--line); margin-top: 40px; padding-top: 20px;
                 font-size: 16px; color: var(--muted); }
+
+  /* The QR in the margin, visible without scrolling (#rail). The bottom block is still
+     there for narrow windows and for anyone who reads to the end; this one exists because
+     the bottom block sits at 88% depth, which as a route to the app is no route at all.
+     Only shown where there is genuinely empty margin — below 1180px the content fills the
+     window and a rail would collide with it. */
+  .rail { display: none; }
+  @media (min-width: 1180px) {
+    .rail {
+      display: block; position: fixed; top: 50%; transform: translateY(-50%);
+      right: max(24px, calc((100vw - 760px) / 2 - 190px));
+      width: 158px; text-align: center; z-index: 5;
+    }
+    .rail .qrbox { width: 158px; margin: 0 auto; }
+    .rail p { font-size: 12.5px; line-height: 1.45; color: var(--muted); margin: 8px 0 0; }
+  }
   footer { text-align: center; color: var(--n-500); font-size: 14px; padding: 30px 20px 56px; }
   footer a { margin: 0 10px; }
   @media (max-width: 560px) { h1 { font-size: 28px; } h2 { font-size: 21px; } body { font-size: 17px; } }
 </style>
 </head>
 <body>
+
+<aside class="rail" id="rail" aria-label="Get Keetle">
+  <div class="qrbox"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37" class="qr" role="img" aria-label="QR code to Keetle on the App Store"><path class="qrline" stroke="#1c1b19" d="M2 2.5h7m3 0h1m5 0h3m2 0h2m3 0h7m-33 1h1m5 0h1m1 0h1m1 0h1m1 0h3m2 0h2m1 0h1m3 0h1m1 0h1m5 0h1m-33 1h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m1 0h2m2 0h5m2 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m1 0h2m1 0h1m5 0h1m1 0h3m1 0h2m1 0h1m1 0h3m1 0h1m-33 1h1m1 0h3m1 0h1m2 0h4m2 0h1m1 0h5m1 0h1m2 0h1m1 0h3m1 0h1m-33 1h1m5 0h1m2 0h1m3 0h2m1 0h1m3 0h1m3 0h1m1 0h1m5 0h1m-33 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-25 1h1m2 0h1m10 0h3m-25 1h1m5 0h1m1 0h2m3 0h1m1 0h1m1 0h3m2 0h1m1 0h3m2 0h3m-30 1h1m1 0h2m1 0h4m1 0h1m2 0h1m1 0h3m1 0h1m1 0h2m3 0h4m-32 1h1m1 0h1m1 0h3m1 0h2m2 0h1m2 0h2m3 0h2m3 0h1m2 0h1m1 0h1m-27 1h2m1 0h1m2 0h1m1 0h1m1 0h1m3 0h2m2 0h3m2 0h5m-30 1h1m3 0h2m3 0h4m1 0h1m2 0h2m2 0h1m1 0h2m4 0h1m-31 1h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h1m1 0h5m2 0h1m1 0h2m2 0h4m-33 1h1m3 0h1m1 0h2m4 0h2m3 0h1m3 0h1m3 0h4m1 0h2m-29 1h2m3 0h2m2 0h2m1 0h1m6 0h1m2 0h1m2 0h1m1 0h1m1 0h1m-33 1h2m1 0h4m6 0h2m2 0h1m4 0h2m1 0h1m1 0h3m2 0h1m-29 1h2m3 0h1m1 0h2m1 0h3m1 0h6m2 0h1m2 0h4m-33 1h2m2 0h3m2 0h2m2 0h3m1 0h1m1 0h3m1 0h2m2 0h1m1 0h4m-29 1h1m2 0h1m2 0h1m1 0h2m1 0h2m2 0h2m3 0h3m1 0h5m-33 1h1m1 0h1m1 0h1m1 0h3m1 0h1m3 0h1m1 0h1m1 0h3m4 0h1m2 0h2m1 0h1m-32 1h2m3 0h1m1 0h1m3 0h2m1 0h1m1 0h1m1 0h2m2 0h3m3 0h1m1 0h1m-31 1h1m1 0h1m2 0h2m1 0h2m5 0h2m1 0h1m2 0h1m2 0h1m2 0h1m1 0h1m1 0h1m-32 1h1m7 0h7m4 0h1m5 0h1m4 0h3m-33 1h2m2 0h3m1 0h1m2 0h2m2 0h2m2 0h2m2 0h6m3 0h1m-25 1h2m3 0h3m3 0h1m1 0h1m1 0h2m3 0h1m1 0h3m-33 1h7m2 0h1m1 0h1m1 0h3m2 0h1m1 0h5m1 0h1m1 0h1m1 0h1m-31 1h1m5 0h1m2 0h2m1 0h1m3 0h1m1 0h1m4 0h2m3 0h4m-32 1h1m1 0h3m1 0h1m3 0h1m2 0h3m2 0h1m1 0h1m1 0h1m1 0h6m1 0h1m-32 1h1m1 0h3m1 0h1m4 0h4m1 0h1m1 0h4m2 0h2m1 0h2m1 0h3m-33 1h1m1 0h3m1 0h1m2 0h1m1 0h2m3 0h4m1 0h1m1 0h2m2 0h2m2 0h2m-33 1h1m5 0h1m7 0h3m1 0h1m4 0h1m3 0h2m1 0h1m-31 1h7m1 0h1m1 0h4m2 0h2m4 0h6m1 0h1m1 0h1"/></svg></div>
+  <p>The app that came out of this — same maths, live countdown.</p>
+</aside>
+
 
 <header>
   <svg class="tile" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Keetle">
