@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Keetle — Know exactly when your kettle boils</title>
-<meta name="description" content="Keetle calculates the exact boil time from your kettle's power, water amount and starting temperature — with a live countdown on the Lock Screen, Dynamic Island and widgets.">
+<meta name="description" content="Keetle works out how long your kettle takes to boil from its power, the water amount and the starting temperature — then counts it down live on the Lock Screen, Dynamic Island and widgets. Free on the App Store.">
+<link rel="canonical" href="https://arferr.github.io/keetle-legal/">
+<meta name="apple-itunes-app" content="app-id=6779433024">
 <style>
   :root { color-scheme: light dark; }
   * { box-sizing: border-box; }
@@ -16,20 +18,36 @@
   a { color: #b26922; }
   .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
 
-  .hero { text-align: center; padding: 64px 20px 40px; }
+  .hero { text-align: center; padding: 64px 20px 32px; }
   .tile {
     width: 112px; height: 112px; margin: 0 auto 24px; display: block;
     border-radius: 26px; box-shadow: 0 10px 30px rgba(178,105,34,0.28);
   }
   h1 { font-size: 40px; line-height: 1.1; margin: 0 0 10px; letter-spacing: -0.5px; }
+  h2 { font-size: 22px; margin: 0 0 8px; }
   .tagline { font-size: 21px; color: #6b6760; margin: 0 auto; max-width: 30ch; }
-  .badge {
-    display: inline-block; margin-top: 28px; padding: 12px 22px; border-radius: 999px;
-    background: linear-gradient(135deg, #ffd89a, #e8a55c 55%, #b26922);
-    color: #3d2207; font-weight: 700; text-decoration: none; font-size: 16px;
-    box-shadow: 0 6px 18px rgba(178,105,34,0.3);
+
+  /* Get it: the official badge everywhere, plus a QR on anything that isn't an iPhone —
+     on a laptop the store page can't install anything, the QR crosses the device gap. */
+  .get { display: flex; justify-content: center; align-items: center; gap: 24px;
+         flex-wrap: wrap; margin-top: 28px; }
+  .badge img { display: block; height: 52px; width: auto; }
+  .get .meta { margin: 8px 0 0; font-size: 13px; color: #8a8580; }
+  .qrbox { width: 112px; padding: 8px; background: #fff; border: 1px solid #e5e2db;
+           border-radius: 12px; }
+  .qrbox .qr { width: 100%; height: auto; display: block; }
+  .qrnote { margin: 6px 0 0; font-size: 12.5px; line-height: 1.4; color: #8a8580; max-width: 112px; }
+
+  /* Screens: four store shots. A row on wide windows; on a phone the row scrolls
+     sideways inside itself, the page never does. */
+  .screens { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 16px 0 8px; }
+  .screens img { width: 100%; height: auto; display: block; border-radius: 16px;
+                 border: 1px solid #e5e2db; }
+  @media (max-width: 640px) {
+    .screens { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px;
+               margin: 0 -20px; padding: 16px 20px 8px; scroll-padding: 0 20px; }
+    .screens img { flex: 0 0 62%; width: 62%; scroll-snap-align: start; }
   }
-  .badge small { display: block; font-weight: 600; font-size: 12px; opacity: 0.75; }
 
   .features { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 24px 0 8px; }
   .card { background: #fff; border: 1px solid #e5e2db; border-radius: 18px; padding: 22px; }
@@ -37,22 +55,32 @@
   .card p { margin: 0; color: #6b6760; font-size: 15px; }
   .emoji { font-size: 26px; line-height: 1; }
 
-  .how { margin: 40px 0; padding: 24px; background: #fff8f0; border-radius: 18px; border: 1px solid #f6d9b7; }
-  .how h2 { margin: 0 0 8px; font-size: 22px; }
-  .how code { background: #fcefe2; padding: 2px 8px; border-radius: 8px; font-size: 15px; color: #8b4f18; }
+  .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 32px 0 0; }
+  .plans ul { margin: 8px 0 0; padding-left: 20px; color: #6b6760; font-size: 15px; }
+  .plans li { margin: 4px 0; }
+  .plans .fine { margin: 10px 0 0; font-size: 14px; color: #8a8580; }
 
-  footer { text-align: center; color: #8a8580; font-size: 14px; padding: 40px 20px 56px; }
+  .how { margin: 32px 0 40px; padding: 24px; background: #fff8f0; border-radius: 18px; border: 1px solid #f6d9b7; }
+  .how code { background: #fcefe2; padding: 2px 8px; border-radius: 8px; font-size: 15px; color: #8b4f18; }
+  .how .aside { color: #6b6760; }
+
+  footer { text-align: center; color: #8a8580; font-size: 14px; padding: 8px 20px 56px; }
   footer a { margin: 0 10px; }
 
   @media (prefers-color-scheme: dark) {
     body { color: #f5f4f1; background: #1a1612; }
     a { color: #e8a55c; }
-    .tagline, .card p, footer { color: #9a958c; }
+    .tagline, .card p, .plans ul, .how .aside, footer { color: #9a958c; }
     .card { background: #221c16; border-color: #2e2620; }
+    .screens img { border-color: #2e2620; }
     .how { background: #221c16; border-color: #2e2620; }
     .how code { background: #2e2620; color: #f2bc78; }
+    .qrbox { background: #f5f4f1; border-color: #2e2620; }
   }
-  @media (max-width: 540px) { .features { grid-template-columns: 1fr; } h1 { font-size: 32px; } }
+  @media (max-width: 540px) {
+    .features, .plans { grid-template-columns: 1fr; }
+    h1 { font-size: 32px; }
+  }
 </style>
 </head>
 <body>
@@ -74,22 +102,62 @@
     </svg>
     <h1>Keetle</h1>
     <p class="tagline">Know exactly when your kettle boils — no more guessing or babysitting the lid.</p>
-    <a class="badge" href="#" aria-disabled="true">Coming to the App Store<small>iPhone · iOS 18+</small></a>
+
+    <div class="get">
+      <div>
+        <a class="badge" href="https://apps.apple.com/app/id6779433024?pt=129011469&amp;ct=home-badge&amp;mt=8"><img src="img/app-store-badge.svg" alt="Download on the App Store" width="156" height="52"></a>
+        <p class="meta">Free · iPhone · iOS 18 or later</p>
+      </div>
+      <div id="get-qr">
+        <div class="qrbox"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41 41" class="qr" role="img" aria-label="QR code to Keetle on the App Store"><path class="qrline" stroke="#1c1b19" d="M2 2.5h7m1 0h4m3 0h1m2 0h2m2 0h7m1 0h7m-37 1h1m5 0h1m3 0h2m3 0h1m4 0h1m4 0h2m1 0h1m1 0h1m5 0h1m-37 1h1m1 0h3m1 0h1m2 0h6m2 0h1m1 0h6m5 0h1m1 0h3m1 0h1m-37 1h1m1 0h3m1 0h1m1 0h1m1 0h1m4 0h1m3 0h2m3 0h3m3 0h1m1 0h3m1 0h1m-37 1h1m1 0h3m1 0h1m1 0h4m1 0h1m6 0h4m2 0h3m1 0h1m1 0h3m1 0h1m-37 1h1m5 0h1m1 0h2m1 0h1m1 0h1m1 0h2m1 0h2m5 0h1m4 0h1m5 0h1m-37 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-29 1h5m2 0h1m1 0h2m2 0h3m2 0h3m-29 1h1m3 0h1m1 0h3m2 0h1m1 0h1m4 0h1m10 0h5m2 0h1m-36 1h5m1 0h5m2 0h1m1 0h1m2 0h2m2 0h2m1 0h4m1 0h2m2 0h1m-35 1h4m1 0h1m1 0h3m1 0h1m1 0h1m1 0h1m3 0h4m2 0h4m2 0h2m-34 1h2m2 0h1m2 0h1m2 0h5m2 0h2m2 0h4m2 0h2m2 0h1m1 0h3m-35 1h2m1 0h5m1 0h10m1 0h1m2 0h1m2 0h5m1 0h4m-37 1h1m1 0h2m1 0h1m2 0h1m2 0h1m3 0h3m2 0h1m2 0h1m1 0h5m2 0h2m1 0h1m-35 1h1m3 0h3m7 0h2m1 0h1m1 0h5m1 0h2m1 0h7m-36 1h1m1 0h2m3 0h2m2 0h6m2 0h4m1 0h1m1 0h3m2 0h2m1 0h1m-35 1h1m2 0h4m1 0h5m1 0h1m1 0h1m2 0h2m2 0h1m2 0h1m3 0h1m2 0h2m1 0h1m-35 1h3m2 0h1m4 0h2m4 0h2m1 0h1m1 0h1m1 0h4m2 0h2m1 0h2m-35 1h1m1 0h6m1 0h2m3 0h1m3 0h1m3 0h2m1 0h2m1 0h1m4 0h1m-33 1h3m2 0h1m3 0h3m1 0h7m1 0h2m1 0h2m1 0h1m1 0h1m1 0h3m-35 1h2m1 0h1m1 0h1m2 0h3m1 0h2m1 0h3m2 0h4m1 0h2m1 0h3m1 0h2m-35 1h1m3 0h1m2 0h2m2 0h2m2 0h2m3 0h2m1 0h2m1 0h4m1 0h2m2 0h1m-35 1h1m3 0h2m1 0h1m3 0h1m1 0h2m1 0h1m2 0h1m2 0h2m1 0h3m2 0h5m-33 1h1m3 0h2m5 0h1m2 0h4m1 0h3m1 0h1m2 0h4m1 0h1m-34 1h3m2 0h1m2 0h3m3 0h1m2 0h2m2 0h3m2 0h4m2 0h3m-36 1h4m5 0h2m1 0h2m2 0h1m2 0h3m1 0h1m3 0h1m3 0h2m-31 1h1m1 0h1m1 0h6m4 0h2m2 0h4m1 0h5m1 0h1m1 0h2m-33 1h1m2 0h1m2 0h1m2 0h1m1 0h2m2 0h1m3 0h1m2 0h1m2 0h1m1 0h1m3 0h3m-36 1h3m2 0h4m1 0h1m4 0h5m1 0h2m1 0h1m3 0h9m-29 1h3m2 0h3m1 0h1m2 0h1m2 0h1m1 0h2m1 0h1m3 0h1m2 0h1m-36 1h7m1 0h1m4 0h4m1 0h1m2 0h4m3 0h1m1 0h1m1 0h1m2 0h1m-36 1h1m5 0h1m3 0h1m2 0h1m1 0h1m3 0h3m2 0h1m1 0h3m3 0h4m-36 1h1m1 0h3m1 0h1m1 0h3m2 0h1m2 0h1m2 0h2m2 0h2m3 0h9m-37 1h1m1 0h3m1 0h1m3 0h2m6 0h2m2 0h4m1 0h5m4 0h1m-37 1h1m1 0h3m1 0h1m3 0h1m3 0h2m3 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m3 0h1m-35 1h1m5 0h1m2 0h2m2 0h1m1 0h3m1 0h4m3 0h1m2 0h1m2 0h4m-36 1h7m1 0h1m4 0h1m2 0h3m2 0h1m2 0h1m2 0h1m1 0h1m1 0h1m1 0h4"/></svg></div>
+        <p class="qrnote">Or scan with your iPhone</p>
+      </div>
+    </div>
   </div>
 
   <div class="wrap">
+    <div class="screens">
+      <img src="img/home.jpg" width="480" height="1043" alt="Keetle's home screen: the kettle, the water amount and the Boil button">
+      <img src="img/boiling.jpg" width="480" height="1043" alt="A boil in progress with the minutes counting down">
+      <img src="img/presets.jpg" width="480" height="1043" alt="Tea presets with their target temperatures and steep times" loading="lazy">
+      <img src="img/scan.jpg" width="480" height="1043" alt="Scanning a kettle's barcode to add it" loading="lazy">
+    </div>
+
     <div class="features">
-      <div class="card"><div class="emoji">⏱️</div><h3>Boil time, to the second</h3><p>Physics, not a guess — from your kettle's wattage, the water amount and its starting temperature.</p></div>
-      <div class="card"><div class="emoji">🔒</div><h3>Live on the Lock Screen</h3><p>A live countdown in Live Activity, the Dynamic Island and home-screen widgets while it heats.</p></div>
-      <div class="card"><div class="emoji">📷</div><h3>Scan your kettle</h3><p>Point the camera at the label or barcode to add your exact model — power and capacity filled in.</p></div>
-      <div class="card"><div class="emoji">🍵</div><h3>Tea &amp; coffee temps</h3><p>Premium: boil, then cool to the exact green, oolong or black temperature, with a steep timer.</p></div>
+      <div class="card"><div class="emoji">⏱️</div><h3>Boil time from physics</h3><p>Worked out from your kettle's wattage, the water amount and its starting temperature — not a generic countdown.</p></div>
+      <div class="card"><div class="emoji">🔒</div><h3>Live on the Lock Screen</h3><p>The countdown follows you to the Lock Screen, the Dynamic Island, widgets and Control Center. Walk away — Keetle pings you when it's ready.</p></div>
+      <div class="card"><div class="emoji">📷</div><h3>2,600+ real kettles</h3><p>Pick yours from the catalog, or scan its barcode or label — power and capacity filled in.</p></div>
+      <div class="card"><div class="emoji">🌡️</div><h3>A water thermometer built in</h3><p>Tap and room temperature estimated from your local weather, so the starting point is right.</p></div>
+      <div class="card"><div class="emoji">🔥</div><h3>Electric or stovetop</h3><p>Works with electric kettles and with stovetop ones — pick the burner when you boil.</p></div>
+      <div class="card"><div class="emoji">🍵</div><h3>Tea &amp; coffee temps</h3><p>Boil, then cool to the exact temperature for green tea, oolong or pour-over, with named presets and a steep timer.</p></div>
+    </div>
+
+    <div class="plans">
+      <div class="card">
+        <h3>Free</h3>
+        <ul>
+          <li>Boil to 100 °C with the live timer</li>
+          <li>Notifications when the water is ready</li>
+          <li>Widgets, Live Activity and Control Center</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Keetle Premium</h3>
+        <ul>
+          <li>Boil, then cool to an exact tea or coffee temperature</li>
+          <li>Named tea presets with a steep timer</li>
+          <li>Still-hot reheat, full boil history</li>
+          <li>All 8 kettle styles</li>
+        </ul>
+        <p class="fine">A subscription or a one-time lifetime purchase, billed by Apple.</p>
+      </div>
     </div>
 
     <div class="how">
       <h2>How it works</h2>
       <p>Keetle uses the heat equation — <code>t = (m·c·ΔT) / (P·η)</code> — combining your kettle's power and efficiency with the water volume and a weather-aware starting temperature, so the estimate fits <em>your</em> kettle, not an average one.</p>
       <p style="margin:10px 0 0"><a href="boil-time.html">Try the maths yourself →</a>
-      <span style="color:#6b6760">a boil-time calculator that runs in this page, no app needed.</span></p>
+      <span class="aside">a boil-time calculator that runs in this page, no app needed.</span></p>
       <p style="margin:6px 0 0"><a href="kettle-physics.html">Why an American kettle takes twice as long →</a></p>
     </div>
   </div>
@@ -98,5 +166,15 @@
     Keetle · a native iOS kettle boil timer
     <div><a href="privacy.html">Privacy Policy</a> · <a href="support.html">Support</a></div>
   </footer>
+
+<script>
+  // On an iPhone the badge is the action; the QR would only point back at the phone in hand.
+  // With JS off both stay visible, which is still correct.
+  (function () {
+    var ua = navigator.userAgent || "";
+    var iOS = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+    if (iOS) document.getElementById("get-qr").hidden = true;
+  })();
+</script>
 </body>
 </html>
